@@ -22,6 +22,7 @@ namespace GraphQlHelper.Serializer
             {
                 var name = property.Name;
                 var propertyValue = property.GetValue(obj);
+                if (propertyValue == null) continue;
                 var value = GetPropertyValueAsString(propertyValue);
                 stringBuilder.AppendLine(name + ": " +  value);
             }

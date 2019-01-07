@@ -1,5 +1,4 @@
 using GraphQlHelper.Serializer;
-using GraphQlHelperTest.MockData.Assertions;
 using GraphQlHelperTest.MockData.Models;
 using System.Collections.Generic;
 using Xunit;
@@ -12,6 +11,22 @@ namespace GraphQlHelperTest.Serializer
         public void SerializeTest()
         {
             // Arrange
+            var expectation = @"{
+IntProperty: 1
+StringProperty: ""GraphQl""
+BoolProperty: True
+ComplexEnumerableProperty: [ {
+IntProperty: 2
+StringProperty: ""Nested""
+}
+
+{
+IntProperty: 3
+}
+
+]
+}
+";
             var testObject = new SerializerTestModelOne
             {
                 BoolProperty = true,
@@ -26,8 +41,7 @@ namespace GraphQlHelperTest.Serializer
                     },
                     new SerializerTestModelTwo
                     {
-                        IntProperty = 3,
-                        StringProperty = "Twice"
+                        IntProperty = 3
                     }
                 }
             };
@@ -37,7 +51,7 @@ namespace GraphQlHelperTest.Serializer
             var result = serializer.Serialize(testObject);
 
             // Assert
-            Assert.Equal(SerializerTestExpectations.Serialize, result);
+            Assert.Equal(expectation, result);
         }
     }
 }
