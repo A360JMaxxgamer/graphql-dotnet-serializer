@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Contains a serializer which serializes a c# object into a string which can be passed to graphl-dotnet as an input within a query string.</Description>
     <PackageProjectUrl>https://github.com/A360JMaxxgamer/graphql-dotnet-serializer</PackageProjectUrl>
     <Copyright>MIT</Copyright>
