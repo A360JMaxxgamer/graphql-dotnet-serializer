@@ -9,7 +9,7 @@ namespace GraphQlHelper.Serializer
     /// </summary>
     public class GraphQlSerializer
     {
-        /// <summary>
+       /// <summary>
         /// Serializes the <paramref name="obj"/> to a string representation which can be used as an input for graphql-dotnet.
         /// </summary>
         /// <param name="obj"></param>
@@ -17,17 +17,36 @@ namespace GraphQlHelper.Serializer
         /// <returns>A serialized version of the <paramref name="obj"/>.</returns>
         public string Serialize(object obj, bool propertyNameToLowerCase = false)
         {
+            var stringBuilder = new StringBuilder();            
+            if (obj is IEnumerable<object> enumerable)
+            {
+                return GetEnumerableValueAsString(enumerable, propertyNameToLowerCase);
+            }
+            else
+            {
+                return SerializeObject(obj, propertyNameToLowerCase);
+            }
+        }
+
+        /// <summary>
+        /// Serializes an object with normal properties.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="propertyNameToLowerCase"></param>
+        /// <returns></returns>
+        private string SerializeObject(object obj, bool propertyNameToLowerCase)
+        {
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("{");
             foreach (var property in obj.GetType().GetProperties())
             {
-                var name = propertyNameToLowerCase 
-                    ? property.Name.ToLower() 
+                var name = propertyNameToLowerCase
+                    ? property.Name.ToLower()
                     : property.Name;
                 var propertyValue = property.GetValue(obj);
                 if (propertyValue == null) continue;
                 var value = GetPropertyValueAsString(propertyValue, propertyNameToLowerCase);
-                stringBuilder.AppendLine(name + ": " +  value);
+                stringBuilder.AppendLine(name + ": " + value);
             }
             stringBuilder.AppendLine("}");
             return stringBuilder.ToString();
